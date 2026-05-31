@@ -1,0 +1,28 @@
+---
+- name: making a direcotry and file within it and restart the nginx service 
+  hosts: myserver
+  become: yes 
+  
+  tasks:
+    - name: create a directory
+      file:
+        path: /tmp/myweb/
+        state: directory
+        mode: '0775'
+        owner: www-data
+
+    - name: make a file in above directory
+      copy:
+        dest: /tmp/myweb/index.html
+        content: 'hello world'
+    - name:
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted 
+        enabled: yes 
